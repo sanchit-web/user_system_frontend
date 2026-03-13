@@ -1,4 +1,72 @@
-.App {
-  font-family: sans-serif;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
   text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #4facfe;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #4facfe;
+  border: none;
+  color: white;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #3498db;
+}
+
+.switch {
+  margin-top: 15px;
+}
+
+.switch span {
+  color: #4facfe;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.message {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f1f1f1;
+  border-radius: 6px;
 }

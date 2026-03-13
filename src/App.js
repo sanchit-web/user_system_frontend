@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "./styles.css";
 
 const BASE_URL = "https://zdhttw-5000.csb.app/api/users";
 
@@ -11,6 +12,7 @@ function App() {
     password: "",
   });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({
@@ -21,73 +23,75 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setLoading(true);
 
     try {
+      let res;
+
       if (isLogin) {
-        const res = await axios.post(`${BASE_URL}/login`, {
+        res = await axios.post(`${BASE_URL}/login`, {
           email: form.email,
           password: form.password,
         });
-        setMessage(res.data.message);
       } else {
-        const res = await axios.post(`${BASE_URL}/register`, form);
-        setMessage(res.data.message);
+        res = await axios.post(`${BASE_URL}/register`, form);
       }
+
+      setMessage(res.data.message);
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error occurred");
+      setMessage(error.response?.data?.message || "Something went wrong");
     }
+
+    setLoading(false);
   };
 
   return (
-    <div style={{ padding: 30 }}>
-      <h2>{isLogin ? "Login" : "Register"}</h2>
+    <div className="container">
+      <div className="card">
+        <h2>{isLogin ? "Login" : "Create Account"}</h2>
 
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              onChange={handleChange}
+              required
+            />
+          )}
+
           <input
-            type="text"
-            name="name"
-            placeholder="Name"
+            type="email"
+            name="email"
+            placeholder="Email Address"
             onChange={handleChange}
             required
           />
-        )}
 
-        <br />
-        <br />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
-        />
+          <button type="submit">
+            {loading ? "Please wait..." : isLogin ? "Login" : "Register"}
+          </button>
+        </form>
 
-        <br />
-        <br />
+        <p className="switch">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <span onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? " Register" : " Login"}
+          </span>
+        </p>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
-
-        <br />
-        <br />
-
-        <button type="submit">{isLogin ? "Login" : "Register"}</button>
-      </form>
-
-      <br />
-
-      <button onClick={() => setIsLogin(!isLogin)}>
-        Switch to {isLogin ? "Register" : "Login"}
-      </button>
-
-      <h3>{message}</h3>
+        {message && <div className="message">{message}</div>}
+      </div>
     </div>
   );
 }
